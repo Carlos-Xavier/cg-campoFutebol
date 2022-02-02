@@ -203,7 +203,7 @@ void ball()
 {
     glPushMatrix();
         glRotatef(1.5, 1, 0, 0);
-        glTranslatef(speedX, speedY, .3);
+        glTranslatef(speedX, speedY, .2);
         glColor3f(1.0,0.9,0.0);
         glScalef(0.04,0.04,0.04);
         glutSolidSphere(1,50,50);
@@ -219,6 +219,42 @@ void placar()
     drawString(str);
 }
 
+void players(float x, float y, GLfloat* color)
+{
+    // Corpo
+    glPushMatrix();
+        glColor3fv(color);
+        glTranslatef(x, y, 0);
+        glutSolidCube(.2);
+    glPopMatrix();
+
+    // Cabeça
+    glPushMatrix();
+        glTranslatef(x, y, .2);
+        glColor3f(0.6, 0.3, 0);
+        glScalef(0.08,0.08,0.08);
+        glutSolidSphere(1,50,50);
+    glPopMatrix();
+}
+
+void playerManage()
+{
+    // Time Azul
+    GLfloat azul[] = {0.0, 0.0, 0.8};
+    players(1, -1, azul);
+    players(-.1, -1.8, azul);
+    players(-.1, -0.5, azul);
+    players(-1, -1, azul);
+
+    // Time Vermelho
+    GLfloat vermelho[] = {0.8, 0.0, 0.0};
+    players(1, 1, vermelho);
+    players(-.1, 1.8, vermelho);
+    players(-.1, 0.5, vermelho);
+    players(-1, 1, vermelho);
+
+}
+
 void display()
 {
     glClearColor(.1, .1, .1, .8);
@@ -232,6 +268,7 @@ void display()
     curves();
     ball();
     placar();
+    playerManage();
 
     glutSwapBuffers();
 }
