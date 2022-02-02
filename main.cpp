@@ -2,9 +2,11 @@
 #include <GL/glut.h>
 #include <cmath>
 #include <stdio.h>
+#include <string.h>
 
 float ballRotateX, ballRotateY, speedX, speedY = 0.0;
 float auxSpeedX, auxSpeedY = 0.0;
+int timeAzul, timeVermelho = 0;
 
 void field()
 {
@@ -31,7 +33,7 @@ void setView()
     glLoadIdentity();
     int w = glutGet(GLUT_WINDOW_WIDTH);
     int h = glutGet(GLUT_WINDOW_HEIGHT);
-    gluPerspective(90, w / h, 1, 10);
+    gluPerspective(88, w / h, 1, 10);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -43,13 +45,15 @@ void setView()
         );
 }
 
-void drawString(float x, float y, float z, char *string) {
-        glTranslatef(-3, 0, .3);
-        glScalef(1/152, 1/152, 1/152);
-        for( char* p = string; *p; p++)
-        {
-            glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
-        }
+void drawString(char *message) {
+    glPushMatrix();
+        glColor3f(.6, 1, 1);
+        glTranslatef(-2.5, -2.5, 1);
+        glScalef(0.001, 0.001, 0.001);
+        glRotated(90, 0, 0, 1);
+        for(int i = 0; i < strlen(message); i++)
+            glutStrokeCharacter(GLUT_STROKE_ROMAN, message[i]);
+    glPopMatrix();
 }
 
 void drawLines()
@@ -197,13 +201,22 @@ void beam()
 
 void ball()
 {
+    glPushMatrix();
+        glRotatef(1.5, 1, 0, 0);
+        glTranslatef(speedX, speedY, .3);
+        glColor3f(1.0,0.9,0.0);
+        glScalef(0.04,0.04,0.04);
+        glutSolidSphere(1,50,50);
+    glPopMatrix();
+}
 
-    glRotatef(1.5, 1, 0, 0);
-    glTranslatef(speedX,speedY, .3);
-    glColor3f(1.0,0.9,0.0);
-    glScalef(0.04,0.04,0.04);
-    glutSolidSphere(1,50,50);
+void placar()
+{
+    char str[30];
+    glLineWidth(2);
+    sprintf(str, "Time Azul: %d  VS  Time Vermelho: %d", timeAzul, timeVermelho);
 
+    drawString(str);
 }
 
 void display()
@@ -218,7 +231,7 @@ void display()
     beam();
     curves();
     ball();
-    drawString(-2, 0, .5, "OPA");
+    placar();
 
     glutSwapBuffers();
 }
@@ -275,13 +288,13 @@ void update(int value)
 
     if ((speedX > -0.3 && speedX < 0.3) && speedY <= -2)
     {
-        printf("GOOOOOOOOOL DO TIME VERMELHO", speedY);
+        timeVermelho += 1;
         speedX = speedY = 0;
     }
 
     if ((speedX > -0.3 && speedX < 0.3) && speedY >= 2)
     {
-        printf("GOOOOOOOOOL DO TIME AZUL", speedY);
+        timeAzul += 1;
         speedX = speedY = 0;
     }
 

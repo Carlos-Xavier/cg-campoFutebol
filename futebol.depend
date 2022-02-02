@@ -1,9 +1,11 @@
 # depslib dependency file v1.0
-1643765938 source:c:\users\cadu-\downloads\futebol\main.cpp
+1643771147 source:c:\users\cadu-\downloads\futebol\main.cpp
 	<GL/gl.h>
 	<GL/glut.h>
 	<cmath>
 	<stdio.h>
+	<string.h>
+	<string>
 
 1301111164 c:\program files (x86)\codeblocks\mingw\include\gl\gl.h
 
