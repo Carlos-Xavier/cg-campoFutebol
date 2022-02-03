@@ -4,18 +4,17 @@
 #include <stdio.h>
 #include <string.h>
 
-float ballRotateX, ballRotateY, speedX, speedY = 0.0;
-float auxSpeedX, auxSpeedY = 0.0;
+float speedX, speedY, auxSpeedX, auxSpeedY, rotateBall = 0.0;
 int timeAzul, timeVermelho = 0;
 
 void field()
 {
     GLfloat color[] = {0.0, 0.6, 0.2};
     GLfloat pointsField[4][3] = {
-        {-1.7, -2.3, 0},
-        {-1.7, 2.3, 0},
-        {1.7, 2.3, 0},
-        {1.7, -2.3, 0},
+        {-1.9, -2.5, 0},
+        {-1.9, 2.5, 0},
+        {1.9, 2.5, 0},
+        {1.9, -2.5, 0},
     };
 
     glColor3fv(color);
@@ -186,6 +185,32 @@ void beam()
         glVertex3f(-0.1, -2.1, 0.3);
         glVertex3f(.3, -2.1, 0.1);
 
+
+        glVertex3f(-0.9, -2.1, 0.3);
+        glVertex3f(-.3, -2.4, 0.1);
+
+        glVertex3f(-0.1, -2.1, 0.3);
+        glVertex3f(.3, -2.4, 0.1);
+
+        glVertex3f(-0.6, -2.25, 0.2);
+        glVertex3f(0.15, -2.25, 0.2);
+
+        glVertex3f(-0.3, -2.4, 0.1);
+        glVertex3f(0.3, -2.4, 0.1);
+
+        glVertex3f(0.1, -2.25, 0.2);
+        glVertex3f(.3, -2.25, 0.1);
+
+        glVertex3f(-0.6, -2.25, 0.2);
+        glVertex3f(-.3, -2.25, 0.1);
+
+        glVertex3f(-0.3, -2.1, 0.1);
+        glVertex3f(-.3, -2.4, 0.1);
+
+        glVertex3f(0.3, -2.1, 0.1);
+        glVertex3f(0.3, -2.4, 0.1);
+
+
         // Direita
         glVertex3f(-.9, 2.1, 0.3);
         glVertex3f(-.1, 2.1, 0.3);
@@ -196,14 +221,39 @@ void beam()
         glVertex3f(-0.1, 2.1, 0.3);
         glVertex3f(.3, 2.1, 0.1);
 
+
+        glVertex3f(-0.9, 2.1, 0.3);
+        glVertex3f(-.3, 2.4, 0.1);
+
+        glVertex3f(-0.1, 2.1, 0.3);
+        glVertex3f(.3, 2.4, 0.1);
+
+        glVertex3f(-0.6, 2.25, 0.2);
+        glVertex3f(0.15, 2.25, 0.2);
+
+        glVertex3f(-0.3, 2.4, 0.1);
+        glVertex3f(0.3, 2.4, 0.1);
+
+        glVertex3f(0.1, 2.25, 0.2);
+        glVertex3f(.3, 2.25, 0.1);
+
+        glVertex3f(-0.6, 2.25, 0.2);
+        glVertex3f(-.3, 2.25, 0.1);
+
+        glVertex3f(-0.3, 2.1, 0.1);
+        glVertex3f(-.3, 2.4, 0.1);
+
+        glVertex3f(0.3, 2.1, 0.1);
+        glVertex3f(0.3, 2.4, 0.1);
+
 	glEnd();
 }
 
 void ball()
 {
     glPushMatrix();
-        glRotatef(1.5, 1, 0, 0);
-        glTranslatef(speedX, speedY, .2);
+        glRotatef(rotateBall, 0, 0, 1);
+        glTranslatef(speedX, speedY, 0);
         glColor3f(1.0,0.9,0.0);
         glScalef(0.04,0.04,0.04);
         glutSolidSphere(1,50,50);
@@ -231,7 +281,7 @@ void players(float x, float y, GLfloat* color)
     // Cabeça
     glPushMatrix();
         glTranslatef(x, y, .2);
-        glColor3f(0.6, 0.3, 0);
+        glColor3f(0.6, 0.3, 0.1);
         glScalef(0.08,0.08,0.08);
         glutSolidSphere(1,50,50);
     glPopMatrix();
@@ -245,6 +295,8 @@ void playerManage()
     players(-.1, -1.8, azul);
     players(-.1, -0.5, azul);
     players(-1, -1, azul);
+    players(-1.3, -0.25, azul);
+    players(1.3, -0.25, azul);
 
     // Time Vermelho
     GLfloat vermelho[] = {0.8, 0.0, 0.0};
@@ -252,6 +304,67 @@ void playerManage()
     players(-.1, 1.8, vermelho);
     players(-.1, 0.5, vermelho);
     players(-1, 1, vermelho);
+    players(-1.3, 0.25, vermelho);
+    players(1.3, 0.25, vermelho);
+
+}
+
+void details()
+{
+    // Gandula
+    GLfloat cor[] = {0.8, 0.5, 0.2};
+    players(-1.85, -1.5, cor);
+
+    // Bolas
+    glPushMatrix();
+        glTranslatef(-1.80, -1.2, .0);
+        glColor3f(1.0,0.9,0.0);
+        glScalef(0.04,0.04,0.04);
+        glutSolidSphere(1,50,50);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(-1.80, -1, .0);
+        glColor3f(1.0,0.9,0.0);
+        glScalef(0.04,0.04,0.04);
+        glutSolidSphere(1,50,50);
+    glPopMatrix();
+
+    // Bandeiras
+    glBegin(GL_LINES);
+        glLineWidth(10.0);
+        glVertex3f(-1.62, -2.1, 0.4);
+        glVertex3f(-1.50, -2.1, 0.1);
+
+        glVertex3f(1.38, -2.1, 0.4);
+        glVertex3f(1.50, -2.1, 0.1);
+
+        glVertex3f(-1.62, 2.1, 0.4);
+        glVertex3f(-1.50, 2.1, 0.1);
+
+        glVertex3f(1.38, 2.1, 0.4);
+        glVertex3f(1.50, 2.1, 0.1);
+	glEnd();
+
+	glBegin(GL_TRIANGLES);
+
+        glVertex3f(-1.62, -2.1, 0.4);
+        glVertex3f(-1.55, -2.1, 0.3);
+        glVertex3f(-1.59, -2, 0.35);
+
+        glVertex3f(-1.62, 2.1, 0.4);
+        glVertex3f(-1.55, 2.1, 0.3);
+        glVertex3f(-1.59, 2, 0.35);
+
+        glVertex3f(1.38, 2.1, 0.4);
+        glVertex3f(1.50, 2.1, 0.3);
+        glVertex3f(1.44, 2, 0.35);
+
+        glVertex3f(1.38, -2.1, 0.4);
+        glVertex3f(1.50, -2.1, 0.3);
+        glVertex3f(1.44, -2, 0.35);
+
+	glEnd();
 
 }
 
@@ -269,6 +382,7 @@ void display()
     ball();
     placar();
     playerManage();
+    details();
 
     glutSwapBuffers();
 }
@@ -276,15 +390,19 @@ void display()
 void handleKeypress(unsigned char key, int x, int y) {
     switch (key) {
         case 97:
+            rotateBall = 3;
             auxSpeedY = -0.025;
             break;
         case 100:
+            rotateBall = 3;
             auxSpeedY = 0.025;
             break;
         case 115:
+            rotateBall = 2;
             auxSpeedX = 0.025;
             break;
         case 119:
+            rotateBall = 2;
             auxSpeedX = -0.025;
             break;
         case 27:
@@ -295,16 +413,16 @@ void handleKeypress(unsigned char key, int x, int y) {
 void KeyboardUpHandler(unsigned char key, int x, int y) {
     switch (key) {
         case 97:
-            auxSpeedY = 0;
+            rotateBall = auxSpeedY = 0;
             break;
         case 100:
-            auxSpeedY = 0;
+            rotateBall = auxSpeedY = 0;
             break;
         case 115:
-            auxSpeedX = 0;
+            rotateBall = auxSpeedX = 0;
             break;
         case 119:
-            auxSpeedX = 0;
+            rotateBall = auxSpeedX = 0;
             break;
         case 27:
             exit(0);
@@ -314,29 +432,21 @@ void KeyboardUpHandler(unsigned char key, int x, int y) {
 void update(int value)
 {
     speedX += auxSpeedX;
-    if ((ballRotateX > -0.3 && ballRotateX < 0.3) && auxSpeedX != 0)
-        ballRotateX += speedX / 15;
-
     speedY += auxSpeedY;
-    if ((ballRotateY > -0.3 && ballRotateY < 0.3) && auxSpeedY != 0)
-        ballRotateY += speedY / 15;
-
-
-
-    if ((speedX > -0.3 && speedX < 0.3) && speedY <= -2)
+    if ((speedX > -0.4 && speedX < 0.3) && speedY <= -2.1)
     {
         timeVermelho += 1;
         speedX = speedY = 0;
     }
 
-    if ((speedX > -0.3 && speedX < 0.3) && speedY >= 2)
+    if ((speedX > -0.4 && speedX < 0.3) && speedY >= 2.1)
     {
         timeAzul += 1;
         speedX = speedY = 0;
     }
 
     glutPostRedisplay();
-    glutTimerFunc(20, update, 0);
+    glutTimerFunc(10, update, 0);
 }
 
 int main( int argc, char **argv )
