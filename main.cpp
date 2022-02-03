@@ -5,6 +5,8 @@
 #include <string.h>
 
 float speedX, speedY, auxSpeedX, auxSpeedY, rotateBall = 0.0;
+float cloudA = 2; float cloudB = -2; float cloudC = 1;
+float cloudSpeed = 0.0035; float ballAngle = 0.05;
 int timeAzul, timeVermelho = 0;
 
 void field()
@@ -32,7 +34,7 @@ void setView()
     glLoadIdentity();
     int w = glutGet(GLUT_WINDOW_WIDTH);
     int h = glutGet(GLUT_WINDOW_HEIGHT);
-    gluPerspective(88, w / h, 1, 10);
+    gluPerspective(95, w / h, 1, 10);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -47,7 +49,7 @@ void setView()
 void drawString(char *message) {
     glPushMatrix();
         glColor3f(.6, 1, 1);
-        glTranslatef(-2.5, -2.5, 1);
+        glTranslatef(-2.9, -1.2, 1);
         glScalef(0.001, 0.001, 0.001);
         glRotated(90, 0, 0, 1);
         for(int i = 0; i < strlen(message); i++)
@@ -366,6 +368,29 @@ void details()
 
 	glEnd();
 
+
+	// Nuvens
+    glPushMatrix();
+        glTranslatef(-3.5, cloudA, .0);
+        glColor3f(1.0,1.0,1.0);
+        glScalef(0.3,0.4,0.3);
+        glutSolidSphere(1,5,10);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(-3.2, cloudB, .0);
+        glColor3f(1.0,1.0,1.0);
+        glScalef(0.2,0.45,0.2);
+        glutSolidSphere(1,4,7);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(-3.2, cloudC, .0);
+        glColor3f(1.0,1.0,1.0);
+        glScalef(0.1,0.3,0.1);
+        glutSolidSphere(1,5,8);
+    glPopMatrix();
+
 }
 
 void display()
@@ -390,19 +415,15 @@ void display()
 void handleKeypress(unsigned char key, int x, int y) {
     switch (key) {
         case 97:
-            rotateBall = 3;
             auxSpeedY = -0.025;
             break;
         case 100:
-            rotateBall = 3;
             auxSpeedY = 0.025;
             break;
         case 115:
-            rotateBall = 2;
             auxSpeedX = 0.025;
             break;
         case 119:
-            rotateBall = 2;
             auxSpeedX = -0.025;
             break;
         case 27:
@@ -413,16 +434,16 @@ void handleKeypress(unsigned char key, int x, int y) {
 void KeyboardUpHandler(unsigned char key, int x, int y) {
     switch (key) {
         case 97:
-            rotateBall = auxSpeedY = 0;
+            auxSpeedY = 0;
             break;
         case 100:
-            rotateBall = auxSpeedY = 0;
+            auxSpeedY = 0;
             break;
         case 115:
-            rotateBall = auxSpeedX = 0;
+            auxSpeedX = 0;
             break;
         case 119:
-            rotateBall = auxSpeedX = 0;
+            auxSpeedX = 0;
             break;
         case 27:
             exit(0);
@@ -433,6 +454,34 @@ void update(int value)
 {
     speedX += auxSpeedX;
     speedY += auxSpeedY;
+    cloudA += cloudSpeed;
+    cloudB += cloudSpeed;
+    cloudC += cloudSpeed;
+
+    if (auxSpeedY != 0 || auxSpeedX != 0)
+    {
+        rotateBall  += ballAngle;
+    }
+
+    if (cloudA > 5.2) {
+        cloudA = -5;
+    }
+
+    if (cloudB > 5.2) {
+        cloudB = -5;
+    }
+
+    if (cloudC > 5.2) {
+        cloudC = -5;
+    }
+
+    if (rotateBall > 8 || rotateBall < -8)
+    {
+        ballAngle = - ballAngle;
+    }
+
+    //printf("rotateBall : %f  |||||| ballAngle: %f\n", rotateBall, ballAngle);
+
     if ((speedX > -0.4 && speedX < 0.3) && speedY <= -2.1)
     {
         timeVermelho += 1;
